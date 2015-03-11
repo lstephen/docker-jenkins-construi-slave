@@ -1,4 +1,4 @@
 #!/bin/bash
 
-ssh -i ${GIT_SSH_KEY} $@
+ssh -o StrictHostKeyChecking=no -i ${GIT_SSH_KEY} $@
 
