@@ -15,6 +15,11 @@ RUN adduser --quiet jenkins && echo "jenkins:jenkins" | chpasswd
 
 RUN mkdir -p /var/jenkins && chown jenkins:jenkins /var/jenkins
 
+COPY git_ssh.sh /usr/bin/git_ssh.sh
+RUN chmod +x /usr/bin/git_ssh.sh
+
+ENV GIT_SSH /usr/bin/git_ssh.sh
+
 VOLUME /var/jenkins
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
