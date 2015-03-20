@@ -7,13 +7,14 @@ RUN curl -sSL https://get.docker.com/ubuntu/ | sh
 
 RUN gem install construi
 
-RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd
+RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd \
+ && sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
 RUN mkdir -p /var/run/sshd
 
-#TODO move this into an entrypoint
-RUN adduser --quiet jenkins && echo "jenkins:jenkins" | chpasswd
+RUN echo "root:jenkins" | chpasswd
 
-RUN mkdir -p /var/jenkins && chown jenkins:jenkins /var/jenkins
+RUN mkdir -p /var/jenkins
 
 VOLUME /var/jenkins
 
