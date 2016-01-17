@@ -12,13 +12,24 @@ volumes:
   - /var/run/docker.sock:/var/run/docker.sock
 
 targets:
+  construi-version:
+    environment:
+      - CONSTRUI_INFO_URL=https://pypi.python.org/pypi/construi/json
+    entrypoint: []
+    run: >
+      /bin/bash -c
+      "curl -sS $CONSTRUI_INFO_URL | grep '\"version\"' | cut -d '\"' -f4
+      > CONSTRUI_VERSION"
+
   version:
-    image: python:2.7
-    run: /bin/bash -c "pip install -I construi && construi --version 2> VERSION"
+    before:
+      - construi-version
+    image: lstephen/versiune:6
+    run: -t "$version.$(cat CONSTRUI_VERSION)" VERSION
 
   build:
     before:
-      - version
+      - construi-version
     run: build
 
   release:

@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y openssh-server python python-pip
 
 RUN curl -sSL https://get.docker.com/ | sh
 
-COPY VERSION /etc/construi-version
+COPY CONSTRUI_VERSION /etc/construi-version
 RUN pip install construi==$(cat /etc/construi-version)
 
 RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd \
